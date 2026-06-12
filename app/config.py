@@ -1,4 +1,5 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
 
 
 class Settings(BaseSettings):
@@ -9,8 +10,10 @@ class Settings(BaseSettings):
 	aic_base_url: str = "https://api.artic.edu/api/v1"
 
 	# App
-	debug: bool = False
+	debug: bool = True
 	cors_origins: list[str] = ["http://localhost:3000"]
+
+	model_config = SettingsConfigDict(env_file=Path(__file__).parent.parent / ".env")
 
 
 settings = Settings()

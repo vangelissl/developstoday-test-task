@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .config import settings
+
 from contextlib import asynccontextmanager
 
 from .config import settings
@@ -8,6 +10,7 @@ from .database import engine
 from app.domain.base import Base
 
 from app.routers.project_router import router as project_router
+from app.routers.place_router import router as place_router
 
 
 @asynccontextmanager
@@ -34,6 +37,7 @@ def create_app(lifespan) -> FastAPI:
     )
 
     application.include_router(project_router)
+    application.include_router(place_router)
 
     if settings.debug:
         @application.get("/health")
