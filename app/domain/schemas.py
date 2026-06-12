@@ -47,3 +47,6 @@ class ResponsePlace(BaseModel):
     notes: str | None
     is_visited: bool
     project_id: uuid.UUID
+
+class ResponseProjectDetail(ResponseProject):
+    places: list[ResponsePlace] = []
