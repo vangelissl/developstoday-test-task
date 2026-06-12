@@ -11,7 +11,6 @@ class Settings(BaseSettings):
 
 	# App
 	debug: bool = True
-	cors_origins: list[str] = ["http://localhost:3000"]
 
 	auth_username: str = "admin"
 	auth_password: str = "admin"
