@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
@@ -11,6 +11,8 @@ from app.domain.base import Base
 
 from app.routers.project_router import router as project_router
 from app.routers.place_router import router as place_router
+
+from .auth import require_auth
 
 
 @asynccontextmanager
@@ -36,8 +38,8 @@ def create_app(lifespan) -> FastAPI:
         allow_headers=["*"]
     )
 
-    application.include_router(project_router)
-    application.include_router(place_router)
+    application.include_router(project_router, dependencies=[Depends(require_auth)])
+    application.include_router(place_router, dependencies=[Depends(require_auth)])
 
     if settings.debug:
         @application.get("/health")

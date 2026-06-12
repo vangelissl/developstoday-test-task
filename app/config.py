@@ -13,6 +13,9 @@ class Settings(BaseSettings):
 	debug: bool = True
 	cors_origins: list[str] = ["http://localhost:3000"]
 
+	auth_username: str = "admin"
+	auth_password: str = "admin"
+
 	model_config = SettingsConfigDict(env_file=Path(__file__).parent.parent / ".env")
 
 
