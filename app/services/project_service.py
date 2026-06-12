@@ -18,7 +18,9 @@ class ProjectService:
 	async def get_all(self, limit: int = 50, offset: int = 0, is_completed: bool | None = None) -> list[ProjectModel]:
 		return await self.project_repo.get_all(limit, offset)
 	
-	async def create(self, project: ProjectModel) -> ProjectModel:
+	async def create(self, project: ProjectModel, place_ids: list[int] = []) -> ProjectModel:
+		if not place_ids:
+			raise ValueError("Project must have at least 1 place")
 		created = await self.project_repo.create(project)
 		return created
 
