@@ -7,6 +7,8 @@ from .config import settings
 from .database import engine
 from app.domain.base import Base
 
+from app.routers.project_router import router as project_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,6 +32,8 @@ def create_app(lifespan) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"]
     )
+
+    application.include_router(project_router)
 
     if settings.debug:
         @application.get("/health")
