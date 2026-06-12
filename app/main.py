@@ -1,15 +1,26 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from contextlib import asynccontextmanager
+
 from .config import settings
+from .database import engine
+from app.domain.base import Base
 
 
-def create_app() -> FastAPI:
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+
+def create_app(lifespan) -> FastAPI:
     application = FastAPI(
         title="Travel Planner",
         version="0.1.0",
         docs_url="/docs" if settings.debug else None,
-        redoc_url=None
+        redoc_url=None,
+        lifespan=lifespan
     )
 
     application.add_middleware(
@@ -28,4 +39,4 @@ def create_app() -> FastAPI:
     return application
 
 
-app = create_app()
+app = create_app(lifespan=lifespan)
